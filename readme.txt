@@ -3,7 +3,7 @@
        Simple tool for extract Adobe flash movie from self-played movie
                 This software made by Popov Evgeniy Alekseyevich
 
-                               Version 0.1.0.1
+                               Version 0.1.0.2
 
 System requirement
 
@@ -11,8 +11,8 @@ System requirement
 
 Description and usage
 
-This program let you extract an Adobe flash movie from stand-alone self-played movie.
-Self-played movie is executable file: it combinate built-in player and the Flash movie in one file.
+This program let you extract an Adobe flash movie from a stand-alone self-played movie.
+Self-played movie is an executable file: it combinate built-in player and the Flash movie in one file.
 This program takes target file name as command line argument.
 
 Exit codes
@@ -41,4 +41,4 @@ You can send me a letter to tuzik87@inbox.ru.
 Version history
 
 0.1 — Initial version.
-0.1.0.1 - Documentation updated.
+0.1.0.1 - 0.1.0.2 - Documentation updated.
