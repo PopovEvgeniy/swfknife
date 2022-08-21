@@ -1,9 +1,9 @@
                                  Swf knife
 
-       Simple tool for extract Adobe flash movie from self-played movie
+       A simple tool for extract Adobe flash movie from self-played movie
                 This software made by Popov Evgeniy Alekseyevich
 
-                               Version 0.1.2
+                               Version 0.1.3
 
 System requirement
 
@@ -42,4 +42,4 @@ Version history
 
 0.1 — Initial version.
 0.1.0.1 - 0.1.0.3 - Documentation updated.
-0.1.1 - 0.1.2 - Small changes.
+0.1.1 - 0.1.3 - Small changes.

@@ -4,7 +4,6 @@
 #include <string.h>
 
 void show_intro();
-void show_message(const char *message);
 FILE *open_input_file(const char *name);
 FILE *create_output_file(const char *name);
 void go_offset(FILE *file,const unsigned long int offset);
@@ -26,13 +25,13 @@ int main(int argc, char *argv[])
  show_intro();
  if(argc==2)
  {
-  show_message("Working... Please wait");
+  puts("Working... Please wait");
   work(argv[1]);
-  show_message("Work finish");
+  puts("Work finish");
  }
  else
  {
-  show_message("You must give target file name as command line argument!");
+  puts("You must give target file name as command line argument!");
  }
  return 0;
 }
@@ -40,16 +39,10 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.1.2");
- puts("Simple tool for extracting Adobe flash movie from self-played movie");
+ puts("Swf knife. Version 0.1.3");
+ puts("A simple tool for extracting Adobe flash movie from self-played movie");
  puts("This sofware made by Popov Evgeniy Alekseyevich,2022 year");
  puts("This software distributed under GNU GENERAL PUBLIC LICENSE");
-}
-
-void show_message(const char *message)
-{
- putchar('\n');
- puts(message);
 }
 
 FILE *open_input_file(const char *name)
@@ -58,7 +51,7 @@ FILE *open_input_file(const char *name)
  target=fopen(name,"rb");
  if (target==NULL)
  {
-  show_message("Can't open input file");
+  puts("Can't open input file");
   exit(1);
  }
  return target;
@@ -70,7 +63,7 @@ FILE *create_output_file(const char *name)
  target=fopen(name,"wb");
  if (target==NULL)
  {
-  show_message("Can't create ouput file");
+  puts("Can't create ouput file");
   exit(2);
  }
  return target;
@@ -80,7 +73,7 @@ void go_offset(FILE *file,const unsigned long int offset)
 {
  if (fseek(file,offset,SEEK_SET)!=0)
  {
-  show_message("Can't jump to target offset");
+  puts("Can't jump to target offset");
   exit(3);
  }
 
@@ -131,7 +124,7 @@ char *get_string_memory(const size_t length)
  memory=(char*)calloc(length+1,sizeof(char));
  if(memory==NULL)
  {
-  show_message("Can't allocate memory");
+  puts("Can't allocate memory");
   exit(4);
  }
  return memory;
@@ -181,7 +174,7 @@ void check_executable(FILE *input)
  fread(signature,sizeof(char),2,input);
  if (strncmp(signature,"MZ",2)!=0)
  {
-  show_message("Executable file of Flash Player Projector corrupted");
+  puts("Executable file of Flash Player Projector corrupted");
   exit(5);
  }
 
@@ -194,7 +187,7 @@ void check_signature(FILE *input)
  fread(&signature,sizeof(unsigned long int),1,input);
  if (signature!=0xFA123456)
  {
-  show_message("Flash movie corrupted");
+  puts("Flash movie corrupted");
   exit(6);
  }
 
