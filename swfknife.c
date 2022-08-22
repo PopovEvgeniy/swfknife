@@ -39,10 +39,11 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.1.3");
+ puts("Swf knife. Version 0.1.4");
  puts("A simple tool for extracting Adobe flash movie from self-played movie");
  puts("This sofware made by Popov Evgeniy Alekseyevich,2022 year");
  puts("This software distributed under GNU GENERAL PUBLIC LICENSE");
+ putchar('\n');
 }
 
 FILE *open_input_file(const char *name)
