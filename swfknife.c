@@ -1,7 +1,4 @@
-#include <stddef.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
+#include "swfknife.h"
 
 void show_intro();
 FILE *open_input_file(const char *name);
@@ -39,9 +36,9 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.1.4");
+ puts("Swf knife. Version 0.1.5");
  puts("A simple tool for extracting Adobe flash movie from self-played movie");
- puts("This sofware made by Popov Evgeniy Alekseyevich,2022 year");
+ puts("This sofware made by Popov Evgeniy Alekseyevich,2022 year-2024 years");
  puts("This software distributed under GNU GENERAL PUBLIC LICENSE");
  putchar('\n');
 }

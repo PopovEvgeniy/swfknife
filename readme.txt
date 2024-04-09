@@ -3,11 +3,11 @@
        A simple tool for extract Adobe flash movie from self-played movie
                 This software made by Popov Evgeniy Alekseyevich
 
-                               Version 0.1.4
+                               Version 0.1.5
 
 System requirement
 
-48 kilobytes free space on storage media.
+64 kilobytes free space on storage media.
 
 Description and usage
 
@@ -43,3 +43,4 @@ Version history
 0.1 - Initial version.
 0.1.0.1 - 0.1.0.3 - Documentation updated.
 0.1.1 - 0.1.4 - Small changes.
+0.1.5 - Visual C++ support improved.
