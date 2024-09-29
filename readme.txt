@@ -1,9 +1,9 @@
                                  Swf knife
 
-       A simple tool for extracting Adobe Flash movies from stand-alone movies
+       A simple tool for extracting Adobe Flash movies from standalone movies
                 This software was made by Popov Evgeniy Alekseyevich
 
-                               Version 0.1.5.2
+                               Version 0.1.6
 
 System requirements
 
@@ -11,19 +11,19 @@ System requirements
 
 Description and usage
 
-This program lets you extract an Adobe Flash movie from a stand-alone movie.
-A stand-alone movie is an executable file. It combines the built-in player and Flash movie in one file.
+This program lets you extract an Adobe Flash movie from a standalone movie.
+A standalone movie is an executable file. It combines the built-in player and a Flash movie in one file.
 This program takes the target file name as a command-line argument.
 
 Exit codes
 
-0 - Operation successfully completed.
-1 - Can't open input file.
-2 - Can't create output file.
-3 - Can't jump to target offset.
+0 - Operation was successfully completed.
+1 - Can't open the input file.
+2 - Can't create the output file.
+3 - Can't jump to the target offset.
 4 - Can't allocate memory.
-5 - Executable file of Flash Player Projector is corrupted.
-6 - Flash movie is corrupted.
+5 - The executable file of Flash Player Projector was corrupted.
+6 - The Flash movie was corrupted.
 
 License
 
@@ -45,3 +45,4 @@ Version history
 0.1.1 — 0.1.4 — Small changes.
 0.1.5 — Visual C++ support improved.
 0.1.5.1 — 0.1.5.2 — Documentation updated.
+0.1.6 — Small changes.

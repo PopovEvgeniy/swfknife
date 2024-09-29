@@ -24,11 +24,11 @@ int main(int argc, char *argv[])
  {
   puts("Working... Please wait");
   work(argv[1]);
-  puts("Work finish");
+  puts("The work has been finished");
  }
  else
  {
-  puts("You must give target file name as command line argument!");
+  puts("You must give a target file name as the command-line argument!");
  }
  return 0;
 }
@@ -36,10 +36,10 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.1.5");
- puts("A simple tool for extracting Adobe flash movie from self-played movie");
- puts("This sofware made by Popov Evgeniy Alekseyevich,2022 year-2024 years");
- puts("This software distributed under GNU GENERAL PUBLIC LICENSE");
+ puts("Swf knife. Version 0.1.6");
+ puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
+ puts("This sofware was made by Popov Evgeniy Alekseyevich,2022 year-2024 years");
+ puts("This software is distributed under GNU GENERAL PUBLIC LICENSE");
  putchar('\n');
 }
 
@@ -49,7 +49,7 @@ FILE *open_input_file(const char *name)
  target=fopen(name,"rb");
  if (target==NULL)
  {
-  puts("Can't open input file");
+  puts("Can't open the input file");
   exit(1);
  }
  return target;
@@ -61,7 +61,7 @@ FILE *create_output_file(const char *name)
  target=fopen(name,"wb");
  if (target==NULL)
  {
-  puts("Can't create ouput file");
+  puts("Can't create the ouput file");
   exit(2);
  }
  return target;
@@ -71,7 +71,7 @@ void go_offset(FILE *file,const unsigned long int offset)
 {
  if (fseek(file,offset,SEEK_SET)!=0)
  {
-  puts("Can't jump to target offset");
+  puts("Can't jump to the target offset");
   exit(3);
  }
 
@@ -172,7 +172,7 @@ void check_executable(FILE *input)
  fread(signature,sizeof(char),2,input);
  if (strncmp(signature,"MZ",2)!=0)
  {
-  puts("Executable file of Flash Player Projector corrupted");
+  puts("The executable file of the Flash Player Projector was corrupted");
   exit(5);
  }
 
@@ -185,7 +185,7 @@ void check_signature(FILE *input)
  fread(&signature,sizeof(unsigned long int),1,input);
  if (signature!=0xFA123456)
  {
-  puts("Flash movie corrupted");
+  puts("The Flash movie was corrupted");
   exit(6);
  }
 
