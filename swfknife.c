@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.1.6");
+ puts("Swf knife. Version 0.1.7");
  puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022 year-2024 years");
  puts("This software is distributed under GNU GENERAL PUBLIC LICENSE");
