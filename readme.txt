@@ -3,11 +3,11 @@
        A simple tool for extracting Adobe Flash movies from standalone movies
                 This software was made by Popov Evgeniy Alekseyevich
 
-                               Version 0.1.6.2
+                               Version 0.1.7
 
 System requirements
 
-64 kilobytes free of space on storage media.
+36 kilobytes free of space on storage media.
 
 Description and usage
 
@@ -31,7 +31,7 @@ This program is distributed under GNU GENERAL PUBLIC LICENSE.
 
 Source code
 
-The source code was compiled under Open Watcom.
+The source code was compiled under Tiny C Compiler.
 But you can do it with any modern C compiler.
 
 Contact
@@ -47,3 +47,4 @@ Version history
 0.1.5.1-0.1.5.2: The documentation has been updated.
 0.1.6: The small changes.
 0.1.6.1-0.1.6.2: The documentation has been updated.
+0.1.7: The source code was recompiled under Tiny C Compiler.
