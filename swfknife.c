@@ -36,10 +36,10 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.1.8");
+ puts("Swf knife. Version 0.1.9");
  puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2025 years");
- puts("This software is distributed under GNU GENERAL PUBLIC LICENSE");
+ puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
  putchar('\n');
 }
 
