@@ -10,7 +10,7 @@ void fast_data_dump(FILE *input,FILE *output,const size_t length);
 unsigned long int get_file_size(FILE *file);
 size_t get_extension_position(const char *source);
 char *get_short_name(const char *name);
-char* get_name(const char *name,const char *ext);
+char *get_name(const char *name,const char *ext);
 void check_executable(FILE *input);
 void check_signature(FILE *input);
 unsigned long int get_movie_length(FILE *input);
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.2.1");
+ puts("Swf knife. Version 0.2.2");
  puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2025 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
@@ -93,11 +93,10 @@ void data_dump(FILE *input,FILE *output,const size_t length)
 {
  char *buffer;
  size_t current,elapsed,block;
- current=0;
  elapsed=0;
  block=4096;
  buffer=get_memory(block);
- while (current<length)
+ for (current=0;current<length;current+=block)
  {
   elapsed=length-current;
   if (elapsed<block)
@@ -106,7 +105,6 @@ void data_dump(FILE *input,FILE *output,const size_t length)
   }
   fread(buffer,sizeof(char),block,input);
   fwrite(buffer,sizeof(char),block,output);
-  current+=block;
  }
  free(buffer);
 }
@@ -161,7 +159,7 @@ char *get_short_name(const char *name)
  return strncpy(result,name,length);
 }
 
-char* get_name(const char *name,const char *ext)
+char *get_name(const char *name,const char *ext)
 {
   char *result=NULL;
   char *output=NULL;
