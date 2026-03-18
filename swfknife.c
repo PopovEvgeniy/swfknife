@@ -3,16 +3,16 @@
 void show_intro();
 FILE *open_input_file(const char *name);
 FILE *create_output_file(const char *name);
-void go_offset(FILE *file,const unsigned long int offset);
+void go_offset(FILE *target,const unsigned long int offset);
 char *get_memory(const size_t length);
+void check_executable(FILE *input);
+void check_signature(FILE *input);
 void data_dump(FILE *input,FILE *output,const size_t length);
 void fast_data_dump(FILE *input,FILE *output,const size_t length);
-unsigned long int get_file_size(FILE *file);
+unsigned long int get_file_size(FILE *target);
 size_t get_extension_position(const char *source);
 char *get_short_name(const char *name);
 char *get_name(const char *name,const char *ext);
-void check_executable(FILE *input);
-void check_signature(FILE *input);
 unsigned long int get_movie_length(FILE *input);
 void decompile(const char *target,const char *flash);
 void work(const char *target);
@@ -36,9 +36,9 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.2.2");
+ puts("Swf knife. Version 0.2.3");
  puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
- puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2025 years");
+ puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
  putchar('\n');
 }
@@ -67,9 +67,9 @@ FILE *create_output_file(const char *name)
  return target;
 }
 
-void go_offset(FILE *file,const unsigned long int offset)
+void go_offset(FILE *target,const unsigned long int offset)
 {
- if (fseek(file,offset,SEEK_SET)!=0)
+ if (fseek(target,offset,SEEK_SET)!=0)
  {
   puts("Can't jump to the target offset");
   exit(3);
@@ -87,6 +87,31 @@ char *get_memory(const size_t length)
   exit(4);
  }
  return memory;
+}
+
+void check_executable(FILE *input)
+{
+ char signature[2];
+ fread(signature,sizeof(char),2,input);
+ if (strncmp(signature,"MZ",2)!=0)
+ {
+  puts("The executable file of the Flash Player projector was corrupted");
+  exit(5);
+ }
+
+}
+
+void check_signature(FILE *input)
+{
+ unsigned long int signature;
+ signature=0;
+ fread(&signature,sizeof(unsigned long int),1,input);
+ if (signature!=0xFA123456)
+ {
+  puts("The Flash movie was corrupted");
+  exit(6);
+ }
+
 }
 
 void data_dump(FILE *input,FILE *output,const size_t length)
@@ -126,28 +151,29 @@ void fast_data_dump(FILE *input,FILE *output,const size_t length)
 
 }
 
-unsigned long int get_file_size(FILE *file)
+unsigned long int get_file_size(FILE *target)
 {
  unsigned long int length;
- fseek(file,0,SEEK_END);
- length=ftell(file);
- rewind(file);
+ fseek(target,0,SEEK_END);
+ length=ftell(target);
+ rewind(target);
  return length;
 }
 
 size_t get_extension_position(const char *source)
 {
- size_t index;
- for(index=strlen(source);index>0;--index)
+ size_t index,position;
+ position=strlen(source);
+ for(index=position;index>0;--index)
  {
   if(source[index]=='.')
   {
+   position=index;
    break;
   }
 
  }
- if (index==0) index=strlen(source);
- return index;
+ return position;
 }
 
 char *get_short_name(const char *name)
@@ -170,31 +196,6 @@ char *get_name(const char *name,const char *ext)
   sprintf(result,"%s%s",output,ext);
   free(output);
   return result;
-}
-
-void check_executable(FILE *input)
-{
- char signature[2];
- fread(signature,sizeof(char),2,input);
- if (strncmp(signature,"MZ",2)!=0)
- {
-  puts("The executable file of the Flash Player projector was corrupted");
-  exit(5);
- }
-
-}
-
-void check_signature(FILE *input)
-{
- unsigned long int signature;
- signature=0;
- fread(&signature,sizeof(unsigned long int),1,input);
- if (signature!=0xFA123456)
- {
-  puts("The Flash movie was corrupted");
-  exit(6);
- }
-
 }
 
 unsigned long int get_movie_length(FILE *input)
