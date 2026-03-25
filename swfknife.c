@@ -20,15 +20,15 @@ void work(const char *target);
 int main(int argc, char *argv[])
 {
  show_intro();
- if(argc==2)
+ if(argc<2)
+ {
+  puts("You must give a target file name as the command-line argument!");
+ }
+ else
  {
   puts("Working... Please wait");
   work(argv[1]);
   puts("The work has been finished");
- }
- else
- {
-  puts("You must give a target file name as the command-line argument!");
  }
  return 0;
 }
@@ -36,7 +36,7 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.2.3");
+ puts("Swf knife. Version 0.2.4");
  puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
@@ -130,6 +130,7 @@ void data_dump(FILE *input,FILE *output,const size_t length)
   }
   fread(buffer,sizeof(char),block,input);
   fwrite(buffer,sizeof(char),block,output);
+  fflush(output);
  }
  free(buffer);
 }
@@ -146,6 +147,7 @@ void fast_data_dump(FILE *input,FILE *output,const size_t length)
  {
   fread(buffer,sizeof(char),length,input);
   fwrite(buffer,sizeof(char),length,output);
+  fflush(output);
   free(buffer);
  }
 
