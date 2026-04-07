@@ -1,4 +1,5 @@
 #include "swfknife.h"
+#include "format.h"
 
 void show_intro();
 FILE *open_input_file(const char *name);
@@ -6,14 +7,13 @@ FILE *create_output_file(const char *name);
 void go_offset(FILE *target,const unsigned long int offset);
 char *get_memory(const size_t length);
 void check_executable(FILE *input);
-void check_signature(FILE *input);
+unsigned long int check_signature(FILE *input);
 void data_dump(FILE *input,FILE *output,const size_t length);
 void fast_data_dump(FILE *input,FILE *output,const size_t length);
 unsigned long int get_file_size(FILE *target);
 size_t get_extension_position(const char *source);
 char *get_short_name(const char *name);
 char *get_name(const char *name,const char *ext);
-unsigned long int get_movie_length(FILE *input);
 void decompile(const char *target,const char *flash);
 void work(const char *target);
 
@@ -36,8 +36,8 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.2.4");
- puts("A simple tool for extracting an Adobe flash movie from a self-played movie");
+ puts("Swf knife. Version 0.2.5");
+ puts("A simple tool for extracting an Adobe flash movie from a standalone movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
  putchar('\n');
@@ -101,17 +101,16 @@ void check_executable(FILE *input)
 
 }
 
-void check_signature(FILE *input)
+unsigned long int check_signature(FILE *input)
 {
- unsigned long int signature;
- signature=0;
- fread(&signature,sizeof(unsigned long int),1,input);
- if (signature!=0xFA123456)
+ service_information information;
+ fread(&information,sizeof(service_information),1,input);
+ if (strncmp(information.signature,"V4",2)!=0)
  {
-  puts("The Flash movie was corrupted");
+  puts("The standalone movie was corrupted");
   exit(6);
  }
-
+ return information.length;
 }
 
 void data_dump(FILE *input,FILE *output,const size_t length)
@@ -200,14 +199,6 @@ char *get_name(const char *name,const char *ext)
   return result;
 }
 
-unsigned long int get_movie_length(FILE *input)
-{
- unsigned long int length;
- length=0;
- fread(&length,sizeof(unsigned long int),1,input);
- return length;
-}
-
 void decompile(const char *target,const char *flash)
 {
  FILE *input;
@@ -216,10 +207,9 @@ void decompile(const char *target,const char *flash)
  input=open_input_file(target);
  check_executable(input);
  total=get_file_size(input);
- go_offset(input,total-8);
- check_signature(input);
- movie=get_movie_length(input);
- go_offset(input,total-movie-8);
+ go_offset(input,total-SERVICE_LENGTH);
+ movie=check_signature(input);
+ go_offset(input,total-movie-SERVICE_LENGTH);
  output=create_output_file(flash);
  fast_data_dump(input,output,(size_t)movie);
  fclose(input);
