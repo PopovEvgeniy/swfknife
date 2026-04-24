@@ -4,6 +4,8 @@
 void show_intro();
 FILE *open_input_file(const char *name);
 FILE *create_output_file(const char *name);
+void read_data(void *data,const size_t length,FILE *input);
+void write_data(const void *data,const size_t length,FILE *output);
 void go_offset(FILE *target,const unsigned long int offset);
 char *get_memory(const size_t length);
 void check_executable(FILE *input);
@@ -36,7 +38,7 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.2.7");
+ puts("Swf knife. Version 0.2.8");
  puts("A simple tool for extracting an Adobe flash movie from a standalone movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
@@ -67,12 +69,34 @@ FILE *create_output_file(const char *name)
  return target;
 }
 
+void read_data(void *data,const size_t length,FILE *input)
+{
+ fread(data,length,sizeof(char),input);
+ if (ferror(input)!=0)
+ {
+  puts("Can't read data!");
+  exit(3);
+ }
+
+}
+
+void write_data(const void *data,const size_t length,FILE *output)
+{
+ fwrite(data,length,sizeof(char),output);
+ if (ferror(output)!=0)
+ {
+  puts("Can't write data!");
+  exit(4);
+ }
+
+}
+
 void go_offset(FILE *target,const unsigned long int offset)
 {
  if (fseek(target,offset,SEEK_SET)!=0)
  {
   puts("Can't jump to the target offset");
-  exit(3);
+  exit(5);
  }
 
 }
@@ -84,7 +108,7 @@ char *get_memory(const size_t length)
  if(memory==NULL)
  {
   puts("Can't allocate memory");
-  exit(4);
+  exit(6);
  }
  return memory;
 }
@@ -92,11 +116,11 @@ char *get_memory(const size_t length)
 void check_executable(FILE *input)
 {
  char signature[2];
- fread(signature,sizeof(char),2,input);
+ read_data(signature,2,input);
  if (strncmp(signature,"MZ",2)!=0)
  {
   puts("The executable file of the Flash Player projector was corrupted");
-  exit(5);
+  exit(7);
  }
 
 }
@@ -104,11 +128,11 @@ void check_executable(FILE *input)
 unsigned long int check_signature(FILE *input)
 {
  service_information information;
- fread(&information,sizeof(service_information),1,input);
+ read_data(&information,sizeof(service_information),input);
  if (strncmp(information.signature,"V4",2)!=0)
  {
   puts("The standalone movie was corrupted");
-  exit(6);
+  exit(8);
  }
  return information.length;
 }
@@ -127,8 +151,8 @@ void data_dump(FILE *input,FILE *output,const size_t length)
   {
    block=elapsed;
   }
-  fread(buffer,sizeof(char),block,input);
-  fwrite(buffer,sizeof(char),block,output);
+  read_data(buffer,block,input);
+  write_data(buffer,block,output);
  }
  free(buffer);
 }
@@ -143,8 +167,8 @@ void fast_data_dump(FILE *input,FILE *output,const size_t length)
  }
  else
  {
-  fread(buffer,sizeof(char),length,input);
-  fwrite(buffer,sizeof(char),length,output);
+  read_data(buffer,length,input);
+  write_data(buffer,length,output);
   free(buffer);
  }
 
