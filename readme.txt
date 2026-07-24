@@ -3,7 +3,7 @@
        A simple tool for extracting an Adobe Flash movie from a standalone movie
                 This software was made by Popov Evgeniy Alekseyevich
 
-                               Version 0.2.9
+                               Version 0.3
 
 The program description.
 
@@ -50,3 +50,4 @@ Version history.
 0.2.1-0.2.7: The small changes.
 0.2.8: The file processing has improved.
 0.2.9: The small changes.
+0.3: A small bug has been fixed.

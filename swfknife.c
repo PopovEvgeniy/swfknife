@@ -13,9 +13,9 @@ unsigned long int check_signature(FILE *input);
 void data_dump(FILE *input,FILE *output,const size_t length);
 void fast_data_dump(FILE *input,FILE *output,const size_t length);
 unsigned long int get_file_size(FILE *target);
-size_t get_extension_position(const char *source);
-char *get_short_name(const char *name);
-char *get_name(const char *name,const char *ext);
+size_t get_name_without_extension_length(const char *source);
+char *get_name_without_extension(const char *name);
+char *get_name(const char *name,const char *extension);
 void decompile(const char *target,const char *flash);
 void work(const char *target);
 
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.2.9");
+ puts("Swf knife. Version 0.3");
  puts("A simple tool for extracting an Adobe flash movie from a standalone movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
@@ -47,7 +47,12 @@ void show_intro()
 
 FILE *open_input_file(const char *name)
 {
- FILE *target;
+ FILE *target=NULL;
+ if (name==NULL)
+ {
+  puts("Can't open the input file");
+  exit(1);
+ }
  target=fopen(name,"rb");
  if (target==NULL)
  {
@@ -59,7 +64,12 @@ FILE *open_input_file(const char *name)
 
 FILE *create_output_file(const char *name)
 {
- FILE *target;
+ FILE *target=NULL;
+ if (name==NULL)
+ {
+  puts("Can't create the ouput file");
+  exit(2);
+ }
  target=fopen(name,"wb");
  if (target==NULL)
  {
@@ -183,49 +193,84 @@ unsigned long int get_file_size(FILE *target)
  return length;
 }
 
-size_t get_extension_position(const char *source)
+size_t get_name_without_extension_length(const char *source)
 {
- size_t index,position;
- position=strlen(source);
- for(index=position;index>0;--index)
+ size_t index=0;
+ size_t position=0;
+ size_t length=0;
+ if (source!=NULL)
  {
-  if(source[index]=='.')
+  length=strlen(source);
+ }
+ for (index=length;index>0;--index)
+ {
+  position=index-1;
+  if (source[position]==DIRECTORY_SEPARATOR)
   {
-   position=index;
    break;
+  }
+  if (source[position]=='.')
+  {
+   if (position>0)
+   {
+    if ((source[position-1]!=DIRECTORY_SEPARATOR) && (source[position-1]!='.'))
+    {
+     length=position;
+     break;
+    }
+
+   }
+
   }
 
  }
- return position;
+ return length;
 }
 
-char *get_short_name(const char *name)
+char *get_name_without_extension(const char *name)
 {
- size_t length;
  char *result=NULL;
- length=get_extension_position(name);
- result=get_memory(length+1);
- return strncpy(result,name,length);
+ size_t length;
+ length=get_name_without_extension_length(name);
+ if (length>0)
+ {
+  result=get_memory(length+1);
+  strncpy(result,name,length);
+ }
+ return result;
 }
 
-char *get_name(const char *name,const char *ext)
+char *get_name(const char *name,const char *extension)
 {
   char *result=NULL;
-  char *output=NULL;
-  size_t length;
-  output=get_short_name(name);
-  length=strlen(output)+strlen(ext);
-  result=get_memory(length+1);
-  sprintf(result,"%s%s",output,ext);
-  free(output);
+  char *name_without_extension=NULL;
+  size_t name_length=0;
+  size_t extension_length=0;
+  name_without_extension=get_name_without_extension(name);
+  if (name_without_extension!=NULL)
+  {
+   name_length=strlen(name_without_extension);
+  }
+  if (extension!=NULL)
+  {
+   extension_length=strlen(extension);
+  }
+  if ((name_length>0) && (extension_length>0))
+  {
+   result=get_memory(name_length+extension_length+1);
+   strncpy(result,name_without_extension,name_length);
+   strncat(result,extension,extension_length);
+  }
+  free(name_without_extension);
   return result;
 }
 
 void decompile(const char *target,const char *flash)
 {
- FILE *input;
- FILE *output;
- unsigned long int total,movie;
+ FILE *input=NULL;
+ FILE *output=NULL;
+ unsigned long int total=0;
+ unsigned long int movie=0;
  input=open_input_file(target);
  check_executable(input);
  total=get_file_size(input);
