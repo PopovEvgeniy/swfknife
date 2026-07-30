@@ -7,12 +7,12 @@ FILE *create_output_file(const char *name);
 void read_data(void *data,const size_t length,FILE *input);
 void write_data(const void *data,const size_t length,FILE *output);
 void go_offset(FILE *target,const unsigned long int offset);
+unsigned long int get_file_size(FILE *target);
 char *get_memory(const size_t length);
 void check_executable(FILE *input);
 unsigned long int check_signature(FILE *input);
 void data_dump(FILE *input,FILE *output,const size_t length);
 void fast_data_dump(FILE *input,FILE *output,const size_t length);
-unsigned long int get_file_size(FILE *target);
 size_t get_name_without_extension_length(const char *source);
 char *get_name_without_extension(const char *name);
 char *get_name(const char *name,const char *extension);
@@ -38,7 +38,7 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.3.1");
+ puts("Swf knife. Version 0.3.2");
  puts("A simple tool for extracting an Adobe flash movie from a standalone movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
  puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
@@ -81,7 +81,7 @@ FILE *create_output_file(const char *name)
 
 void read_data(void *data,const size_t length,FILE *input)
 {
- fread(data,length,sizeof(char),input);
+ fread(data,sizeof(char),length,input);
  if (ferror(input)!=0)
  {
   puts("Can't read data!");
@@ -92,7 +92,7 @@ void read_data(void *data,const size_t length,FILE *input)
 
 void write_data(const void *data,const size_t length,FILE *output)
 {
- fwrite(data,length,sizeof(char),output);
+ fwrite(data,sizeof(char),length,output);
  if (ferror(output)!=0)
  {
   puts("Can't write data!");
@@ -111,6 +111,19 @@ void go_offset(FILE *target,const unsigned long int offset)
 
 }
 
+unsigned long int get_file_size(FILE *target)
+{
+ unsigned long int length=0;
+ if (fseek(target,0,SEEK_END)!=0)
+ {
+  puts("Can't get the file size!");
+  exit(6);
+ }
+ length=ftell(target);
+ rewind(target);
+ return length;
+}
+
 char *get_memory(const size_t length)
 {
  char *memory=NULL;
@@ -118,7 +131,7 @@ char *get_memory(const size_t length)
  if(memory==NULL)
  {
   puts("Can't allocate memory");
-  exit(6);
+  exit(7);
  }
  return memory;
 }
@@ -130,7 +143,7 @@ void check_executable(FILE *input)
  if (strncmp(signature,"MZ",2)!=0)
  {
   puts("The executable file of the Flash Player projector was corrupted");
-  exit(7);
+  exit(8);
  }
 
 }
@@ -142,7 +155,7 @@ unsigned long int check_signature(FILE *input)
  if (strncmp(information.signature,"V4",2)!=0)
  {
   puts("The standalone movie was corrupted");
-  exit(8);
+  exit(9);
  }
  return information.length;
 }
@@ -182,15 +195,6 @@ void fast_data_dump(FILE *input,FILE *output,const size_t length)
   free(buffer);
  }
 
-}
-
-unsigned long int get_file_size(FILE *target)
-{
- unsigned long int length=0;
- fseek(target,0,SEEK_END);
- length=ftell(target);
- rewind(target);
- return length;
 }
 
 size_t get_name_without_extension_length(const char *source)

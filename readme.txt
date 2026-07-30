@@ -3,7 +3,7 @@
        A simple tool for extracting an Adobe Flash movie from a standalone movie
                 This software was made by Popov Evgeniy Alekseyevich
 
-                               Version 0.3.1
+                               Version 0.3.2
 
 The program description.
 
@@ -19,9 +19,10 @@ Exit codes.
 3: Can't read data!
 4: Can't write data!
 5: Can't jump to the target offset.
-6: Can't allocate memory.
-7: The executable file of the Flash Player projector was corrupted.
-8: The standalone movie was corrupted.
+6: Can't get the file size!
+7: Can't allocate memory.
+8: The executable file of the Flash Player projector was corrupted.
+9: The standalone movie was corrupted.
 
 License.
 
@@ -51,4 +52,4 @@ Version history.
 0.2.8: The file processing has improved.
 0.2.9: The small changes.
 0.3: A small bug has been fixed.
-0.3.1: The small changes.
+0.3.1-0.3.2: The small changes.
