@@ -24,16 +24,21 @@ void work(const char *target);
 int main(int argc, char *argv[])
 {
  show_intro();
- if(argc<2)
+ switch (argc)
  {
+  case 1:
   puts("You must give a target file name as the command-line argument!");
   exit(COMMAND_LINE_ARGUMENTS_ERROR);
- }
- else
- {
-  puts("Working... Please wait");
+  break;
+  case 2:
+  puts("Working...");
   work(argv[1]);
   puts("The work has been finished");
+  break;
+  default:
+  puts("You gave too many command-line arguments");
+  exit(COMMAND_LINE_ARGUMENTS_ERROR);
+  break;
  }
  return 0;
 }
@@ -41,10 +46,10 @@ int main(int argc, char *argv[])
 void show_intro()
 {
  putchar('\n');
- puts("Swf knife. Version 0.3.4");
+ puts("Swf knife 0.3.5");
  puts("A simple tool for extracting an Adobe flash movie from a standalone movie");
  puts("This sofware was made by Popov Evgeniy Alekseyevich,2022-2026 years");
- puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE");
+ puts("This software is distributed under the GNU GENERAL PUBLIC LICENSE (version 2 or later) terms");
  putchar('\n');
 }
 
